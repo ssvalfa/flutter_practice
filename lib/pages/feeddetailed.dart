@@ -26,7 +26,7 @@ class FeedDetailed extends StatelessWidget {
                 width: double.infinity,
                 fit: BoxFit.cover,
               ),
-              Positioned(
+              const Positioned(
                 top: 40,
                 left: 16,
                 child: Icon(
@@ -35,7 +35,7 @@ class FeedDetailed extends StatelessWidget {
                   size: 28,
                 ),
               ),
-              Positioned(
+              const Positioned(
                 top: 40,
                 right: 16,
                 child: Icon(
@@ -48,8 +48,8 @@ class FeedDetailed extends StatelessWidget {
           ),
 
           // Content Section
-          Padding(
-            padding: const EdgeInsets.all(16.0),
+          const Padding(
+            padding: EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

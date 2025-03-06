@@ -41,8 +41,10 @@ class PocketBaseService {
 
         if (userRecord == null) {
           // If user data is not available in authStore, fetch manually
+          // ignore: unused_local_variable
           final userId =
               pb.authStore.token; // Extract user ID from token (if applicable)
+          // ignore: unused_local_variable
           final record = await pb
               .collection('sportly_users')
               .authRefresh(); // Refresh auth data

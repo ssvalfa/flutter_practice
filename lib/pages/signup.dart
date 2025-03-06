@@ -195,7 +195,7 @@ class _SignupPageState extends State<SignupPage> {
                           style: TextStyle(fontSize: 16),
                         ),
                       )
-                    : CircularProgressIndicator(),
+                    : const CircularProgressIndicator(),
                 const SizedBox(height: 16),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

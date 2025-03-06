@@ -58,7 +58,7 @@ class _TeamsPageState extends State<TeamsPage> {
                             'https://restaurant-menu.fly.dev/api/files/sport_teams/${teams[index].id}/${teams[index].img}'),
                         title: Text(teams[index].title),
                         subtitle: Text(teams[index].country),
-                        trailing: Icon(Icons.arrow_right),
+                        trailing: const Icon(Icons.arrow_right),
                       ));
             }
           }),

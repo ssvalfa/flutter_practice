@@ -14,9 +14,9 @@ class LiveCard extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Text(
+          const Text(
             'Real Madrid VS F.C. Barcelona',
-            style: const TextStyle(
+            style: TextStyle(
               color: Colors.white,
               fontSize: 16,
               fontWeight: FontWeight.bold,
@@ -38,7 +38,7 @@ class LiveCard extends StatelessWidget {
               // Логотип команды (пример)
               Column(
                 children: [
-                  CircleAvatar(
+                  const CircleAvatar(
                     radius: 24,
                     backgroundColor: Colors.white,
                     // Тут можно поставить AssetImage с логотипом
@@ -62,9 +62,9 @@ class LiveCard extends StatelessWidget {
               ),
               const SizedBox(width: 24),
               // Счёт
-              Text(
+              const Text(
                 '1 - 0',
-                style: const TextStyle(
+                style: TextStyle(
                   color: Colors.white,
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
@@ -74,7 +74,7 @@ class LiveCard extends StatelessWidget {
               // Логотип команды (пример)
               Column(
                 children: [
-                  CircleAvatar(
+                  const CircleAvatar(
                     radius: 24,
                     backgroundColor: Colors.white,
                     child: Text(

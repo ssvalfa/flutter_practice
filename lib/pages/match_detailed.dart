@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class MatchDetailPage extends StatefulWidget {
-  const MatchDetailPage({Key? key}) : super(key: key);
+  const MatchDetailPage({super.key});
 
   @override
   State<MatchDetailPage> createState() => _MatchDetailPageState();
@@ -65,7 +65,7 @@ class _MatchDetailPageState extends State<MatchDetailPage>
                                 size: 24,
                               ),
                             ),
-                            Text(
+                            const Text(
                               'Match',
                               style: TextStyle(
                                 color: Colors.white,
@@ -74,8 +74,8 @@ class _MatchDetailPageState extends State<MatchDetailPage>
                               ),
                             ),
                             // Иконки справа
-                            Row(
-                              children: const [
+                            const Row(
+                              children: [
                                 Icon(
                                   Icons.search,
                                   color: Colors.white,
@@ -142,14 +142,14 @@ class _MatchDetailPageState extends State<MatchDetailPage>
                             children: [
                               _buildStatisticsTab(),
                               // Здесь замените на ваш контент для lineup
-                              Center(
+                              const Center(
                                 child: Text(
                                   'Lineup Content',
                                   style: TextStyle(color: Colors.white),
                                 ),
                               ),
                               // Здесь замените на ваш контент для timeline
-                              Center(
+                              const Center(
                                 child: Text(
                                   'Timeline Content',
                                   style: TextStyle(color: Colors.white),

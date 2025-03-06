@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 // ignore: unused_import
 import 'package:go_router/go_router.dart';
 import 'package:flutter_application_1/router.dart';
+import 'package:flutter_application_1/services/pocketbase_service.dart';
 
-void main() {
+Future<void> main() async {
   runApp(SportlyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  await pocketBaseService.initAuth();
 }
 
 class SportlyApp extends StatelessWidget {
-  SportlyApp({super.key});
+  const SportlyApp({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -64,9 +64,9 @@ class _FeedPageState extends State<FeedPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         // Приветствие
-                        Column(
+                        const Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
+                          children: [
                             Text(
                               'Hi Vincent,',
                               style: TextStyle(
@@ -88,17 +88,17 @@ class _FeedPageState extends State<FeedPage> {
                         // Иконки поиска и переключателя вида
                         Row(
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.search,
                               color: Colors.white,
                               size: 24,
                             ),
-                            SizedBox(width: 16),
+                            const SizedBox(width: 16),
                             IconButton(
                               onPressed: () {
                                 context.push('/teams');
                               },
-                              icon: Icon(
+                              icon: const Icon(
                                 Icons.grid_view_rounded,
                                 color: Colors.white,
                                 size: 24,
@@ -159,7 +159,7 @@ class _FeedPageState extends State<FeedPage> {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    LiveCard(),
+                    const LiveCard(),
                     // -----------------------------
 
                     const SizedBox(height: 16),
