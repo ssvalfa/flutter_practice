@@ -1,24 +1,21 @@
 import 'package:flutter/material.dart';
+// ignore: unused_import
+import 'package:go_router/go_router.dart';
 import 'package:flutter_application_1/router.dart';
-// ignore: depend_on_referenced_packages
 
 void main() {
-  runApp(const MyApp());
+  runApp(SportlyApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class SportlyApp extends StatelessWidget {
+  SportlyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      title: 'Flutter',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData.dark(),
       routerConfig: router,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
     );
   }
 }
-

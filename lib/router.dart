@@ -1,9 +1,16 @@
-// ignore_for_file: depend_on_referenced_packages
-
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/pages/carscatalogpage.dart';
+import 'package:flutter_application_1/pages/upcominglist.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter_application_1/pages/newspage.dart';
+import 'package:flutter_application_1/pages/teams/teams_page.dart';
+import 'package:flutter_application_1/pages/feeddetailed.dart';
+import 'package:flutter_application_1/pages/login.dart';
+import 'package:flutter_application_1/pages/signup.dart';
+import 'package:flutter_application_1/pages/match_detailed.dart';
+import 'package:flutter_application_1/pages/upcomingmatches_detailed.dart';
+import 'package:flutter_application_1/pages/teams/teams_detailed.dart';
+// ignore: duplicate_import
+import 'package:flutter_application_1/pages/upcominglist.dart';
+import 'package:flutter_application_1/services/pocketbase_service.dart';
 
 import 'pages/homepage.dart';
 
@@ -21,30 +28,42 @@ Page<void> noTransitionPageBuilder(
   );
 }
 
-final router = GoRouter(navigatorKey: _parentKey, routes: [
-  ShellRoute(
-      navigatorKey: _shellKey,
-      builder: (context, state, child) => HomePage(
-            child: child,
-          ),
-      routes: [
-        GoRoute(
-          path: '/',
-          name: 'news',
-          parentNavigatorKey: _shellKey,
-          pageBuilder: (context, state) => noTransitionPageBuilder(
-            context,
-            state,
-            const Newspage(),
-          ),
-        ),
-        GoRoute(
-          path: CarsCatalogPage
-              .route, 
-          parentNavigatorKey: _shellKey,
-          name: 'cars',
-          pageBuilder: (context, state) =>
-              noTransitionPageBuilder(context, state, const CarsCatalogPage()),
-        ),
-      ]),
-]);
+final router = GoRouter(
+    navigatorKey: _parentKey,
+    redirect: (context, state) {
+      final isAuthenticated = pocketBaseService.isAuthenticated();
+      final isLoggingIn = state.matchedLocation == '/login';
+      final isSigningUp = state.matchedLocation == '/signup';
+
+      if (!isAuthenticated && !isLoggingIn && !isSigningUp) {
+        return '/login'; // Redirect to login if not authenticated and not on login/signu
+      }
+      if (isAuthenticated && (isLoggingIn || isSigningUp)) {
+        return '/'; // Redirect authenticated users away from login/signup pages
+      }
+      return null;
+    },
+    routes: [
+      GoRoute(path: '/', builder: (context, state) => const FeedPage()),
+      GoRoute(path: '/login', builder: (context, state) => const LoginPage()),
+      GoRoute(path: '/signup', builder: (context, state) => const SignupPage()),
+      GoRoute(
+          path: '/upcomingmatches',
+          builder: (context, state) => const UpcomingMatchesPage()),
+      GoRoute(
+          path: '/matchdetail',
+          builder: (context, state) => const MatchDetailPage()),
+      GoRoute(path: '/teams', builder: (context, state) => const TeamsPage()),
+      GoRoute(
+          path: '/details',
+          builder: (context, state) => const TeamsDetailedPage()),
+      GoRoute(
+          path: '/feeddetailed',
+          builder: (context, state) => const FeedDetailed()),
+      GoRoute(
+          path: '/upcoming',
+          builder: (context, state) => const UpcomingMatchesPage()),
+      GoRoute(
+          path: '/upcominglist',
+          builder: (context, state) => const UpcomingMatchesListPage())
+    ]);
