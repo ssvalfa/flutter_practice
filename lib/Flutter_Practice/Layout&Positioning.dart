@@ -1,3 +1,4 @@
+// ignore: file_names
 import 'package:flutter/material.dart';
 
 class MyWidget extends StatelessWidget {
@@ -9,7 +10,10 @@ class MyWidget extends StatelessWidget {
   }
 }
 
+
 class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -215,7 +219,7 @@ class HomeScreen extends StatelessWidget {
 class DetailScreen extends StatelessWidget {
   final String title;
 
-  const DetailScreen({required this.title});
+  const DetailScreen({super.key, required this.title});
 
   @override
   Widget build(BuildContext context) {
