@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:flutter_application_1/main.dart';
 import 'package:flutter_application_1/models/team.dart';
 import 'package:flutter_application_1/services/pocketbase_service.dart';
 // ignore: unused_import
@@ -52,7 +54,9 @@ class _TeamsPageState extends State<TeamsPage> {
               return ListView.builder(
                   itemCount: teams!.length,
                   itemBuilder: (context, index) => ListTile(
-                        onTap: () {},
+                        onTap: () {
+                          context.push('/details');
+                        },
                         leading: Image.network(
                             width: 40,
                             'https://restaurant-menu.fly.dev/api/files/sport_teams/${teams[index].id}/${teams[index].img}'),
