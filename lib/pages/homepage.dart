@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/pages/teams/teams_page.dart';
 import 'package:flutter_application_1/widgets/live_card.dart';
 import 'package:flutter_application_1/widgets/leagueIcons.dart';
-
+import 'package:flutter_application_1/widgets/upcoming_card.dart';
 import 'package:go_router/go_router.dart';
 
 class FeedPage extends StatefulWidget {
@@ -191,7 +191,7 @@ class _FeedPageState extends State<FeedPage> {
                       ],
                     ),
                     const SizedBox(height: 8),
-                    _buildUpcomingMatchCard(
+                    UpcomingCard(
                       leagueLogo1: 'https://placehold.co/6x6.png', // пример
                       leagueLogo2: 'https://placehold.co/6x6.png',
                       matchTitle: 'Aersenal VS Dortmund',
@@ -199,7 +199,7 @@ class _FeedPageState extends State<FeedPage> {
                     ),
                     const SizedBox(height: 8),
 
-                    _buildUpcomingMatchCard(
+                    UpcomingCard(
                       leagueLogo1: 'https://placehold.co/8x8.png', // пример
                       leagueLogo2: 'https://placehold.co/8x8.png',
                       matchTitle: 'Bayem VS Man United',
@@ -253,66 +253,6 @@ class _FeedPageState extends State<FeedPage> {
   }
 
   // Виджет для горизонтальной прокрутки лиг
-  Widget _buildUpcomingMatchCard({
-    required String leagueLogo1,
-    required String leagueLogo2,
-    required String matchTitle,
-    required String matchDate,
-  }) {
-    return GestureDetector(
-        onTap: () {
-          context.push('/upcoming');
-        },
-        child: Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: const Color(0xFF2C2C2C),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Row(
-            children: [
-              // Лого лиги / команды
-              CircleAvatar(
-                radius: 18,
-                backgroundImage: AssetImage(leagueLogo1), // Placeholder
-                backgroundColor:
-                    Colors.white24, // На случай отсутствия изображения
-              ),
-              CircleAvatar(
-                radius: 18,
-                backgroundImage: AssetImage(leagueLogo2), // Placeholder
-                backgroundColor:
-                    Colors.white24, // На случай отсутствия изображения
-              ),
-              const SizedBox(width: 16),
-              // Текст
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      matchTitle,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      matchDate,
-                      style: TextStyle(
-                        color: Colors.white.withOpacity(0.6),
-                        fontSize: 12,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ));
-  }
 
   // Виджет карточки новостей (Feed)
   Widget _buildFeedCard({

@@ -55,8 +55,15 @@ final router = GoRouter(
           builder: (context, state) => const MatchDetailPage()),
       GoRoute(path: '/teams', builder: (context, state) => const TeamsPage()),
       GoRoute(
-          path: '/details',
-          builder: (context, state) => const TeamsDetailedPage()),
+          path: '/teams/:id',
+          builder: (context, state) {
+            final id = state.pathParameters['id']!;
+            final extra = state.extra as Map<String, dynamic>?;
+            return TeamsDetailedPage(
+              id: id,
+              title: extra?['title'] ?? 'Title',
+            );
+          }),
       GoRoute(
           path: '/feeddetailed',
           builder: (context, state) => const FeedDetailed()),

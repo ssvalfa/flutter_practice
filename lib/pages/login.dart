@@ -26,7 +26,7 @@ class _LoginPageState extends State<LoginPage> {
     if (_formKey.currentState?.validate() ?? false) {
       try {
         final authData = await pocketBaseService.pb
-            .collection('sport_sers')
+            .collection('sportly_users')
             .authWithPassword(
                 _usernameController.text, _passwordController.text);
 

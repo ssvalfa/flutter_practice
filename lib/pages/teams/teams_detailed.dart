@@ -1,7 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/services/pocketbase_service.dart';
+import 'package:flutter_application_1/widgets/live_card.dart';
+import 'package:flutter_application_1/widgets/upcoming_card.dart';
 
-class TeamsDetailedPage extends StatelessWidget {
-  const TeamsDetailedPage({super.key});
+import '../../models/team.dart';
+
+class TeamsDetailedPage extends StatefulWidget {
+  final String id;
+  final String title;
+  const TeamsDetailedPage({super.key, required this.id, required this.title});
+
+  @override
+  State<TeamsDetailedPage> createState() => _TeamsDetailedPageState();
+}
+
+class _TeamsDetailedPageState extends State<TeamsDetailedPage> {
+  late Future<Team> team;
+
+  Future<Team> getData() async {
+    final record =
+        await pocketBaseService.pb.collection('sport_teams').getOne(widget.id);
+    return Team.fromJson(record.toJson());
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    team = getData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,127 +41,57 @@ class TeamsDetailedPage extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
           ),
           padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: const TextField(
-            style: TextStyle(color: Colors.white),
-            decoration: InputDecoration(
-              icon: Icon(Icons.search, color: Colors.green),
-              hintText: "Search...",
-              hintStyle: TextStyle(color: Colors.white54),
-              border: InputBorder.none,
-            ),
-          ),
+          child: Text(widget.title),
         ),
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          _buildLiveMatch(),
-          const SizedBox(height: 20),
-          _buildUpcomingMatches(),
-          const SizedBox(height: 20),
-          _buildTeamsList(),
-        ],
-      ),
-    );
-  }
 
-  Widget _buildLiveMatch() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.grey[900],
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            "LIVE MATCHES",
-            style: TextStyle(color: Colors.white, fontSize: 16),
-          ),
-          const SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Image.asset("assets/real_madrid.png", width: 40),
-              const Text(
-                "1 - 0",
-                style: TextStyle(fontSize: 22, color: Colors.white),
-              ),
-              Image.asset("assets/barcelona.png", width: 40),
-            ],
-          ),
-          const SizedBox(height: 5),
-          const Text(
-            "Old Trafford - Group H",
-            style: TextStyle(color: Colors.green),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildUpcomingMatches() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.grey[900],
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            "UPCOMING MATCHES",
-            style: TextStyle(color: Colors.white, fontSize: 16),
-          ),
-          const SizedBox(height: 10),
-          ListTile(
-            leading: Image.asset("assets/man_utd.png", width: 40),
-            title: const Text("M United VS Barcelona",
-                style: TextStyle(color: Colors.white)),
-            subtitle: const Text("Tuesday, 9 Mar 2021, 05:00 AM",
-                style: TextStyle(color: Colors.green)),
-            trailing: const Icon(Icons.arrow_forward_ios, color: Colors.white),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildTeamsList() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.grey[900],
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            "TEAMS",
-            style: TextStyle(color: Colors.white, fontSize: 16),
-          ),
-          const SizedBox(height: 10),
-          ListTile(
-            leading: Image.asset("assets/barcelona.png", width: 40),
-            title: const Text("FC Barcelona",
-                style: TextStyle(color: Colors.white)),
-            subtitle: const Text("Upcoming Match - 9 Mar 2021",
-                style: TextStyle(color: Colors.white54)),
-            trailing: const Icon(Icons.arrow_forward_ios, color: Colors.white),
-          ),
-          ListTile(
-            leading: Image.asset("assets/espanyol.png", width: 40),
-            title: const Text("RCD Espanyol de Barcelona",
-                style: TextStyle(color: Colors.white)),
-            subtitle: const Text("No Upcoming Match",
-                style: TextStyle(color: Colors.white54)),
-            trailing: const Icon(Icons.arrow_forward_ios, color: Colors.white),
-          ),
-        ],
-      ),
+      body: SafeArea(
+          child: FutureBuilder(
+              future: team,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                } else if (!snapshot.hasData) {
+                  return const Center(child: Text('No teams available.'));
+                } else {
+                  final Team team = snapshot.data!;
+                  return SingleChildScrollView(
+                    padding: const EdgeInsets.all(12),
+                    child: Column(
+                      children: [
+                        LiveCard(),
+                        Text(team.title),
+                        Text(team.country),
+                        Text(team.type),
+                        Text(team.collectionId),
+                        Text(team.created),
+                      ],
+                    ),
+                  );
+                }
+              })),
+      // body: ListView(
+      //   padding: const EdgeInsets.all(16),
+      //   children: [
+      //     const LiveCard(),
+      //     const SizedBox(height: 20),
+      //     // UpcomingCard(
+      //     //   leagueLogo1: 'https://placehold.co/8x8.png',
+      //     //   leagueLogo2: 'https://placehold.co/8x8.png',
+      //     //   matchTitle: "M United VS Barcelona",
+      //     //   matchDate: "Tuesday, 9 Mar 2021, 05:00 AM",
+      //     // ),
+      //     // const SizedBox(height: 10),
+      //     // UpcomingCard(
+      //     //   leagueLogo1: 'https://placehold.co/8x8.png',
+      //     //   leagueLogo2: 'https://placehold.co/8x8.png',
+      //     //   matchTitle: "M United VS Barcelona",
+      //     //   matchDate: "Tuesday, 9 Mar 2021, 05:00 AM",
+      //     // ),
+      //   ],
+      // ),
     );
   }
 }
