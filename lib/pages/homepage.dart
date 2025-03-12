@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 // ignore: unused_import
 import 'package:flutter_application_1/pages/teams/teams_page.dart';
 import 'package:flutter_application_1/widgets/live_card.dart';
-import 'package:flutter_application_1/widgets/league_Icons.dart';
+// import 'package:flutter_application_1/widgets/league_Icons.dart';
 import 'package:flutter_application_1/widgets/upcoming_card.dart';
 import 'package:go_router/go_router.dart';
 
@@ -14,18 +14,18 @@ class FeedPage extends StatefulWidget {
 }
 
 class _FeedPageState extends State<FeedPage> {
-  int _leagueIndex = 0;
-  List<Map> leagues = [
-    {"label": "UEFA Champions\nleague", "icon": Icons.sports_soccer},
-    {"label": "MLS", "icon": Icons.sports_soccer_outlined},
-    {"label": "NBA", "icon": Icons.sports_basketball},
-    {"label": "Premier League", "icon": Icons.sports_volleyball}
-  ];
-  void selectLeague(int index) {
-    setState(() {
-      _leagueIndex = index;
-    });
-  }
+  // int _leagueIndex = 0;
+  // List<Map> leagues = [
+  //   {"label": "UEFA Champions\nleague", "icon": Icons.sports_soccer},
+  //   {"label": "MLS", "icon": Icons.sports_soccer_outlined},
+  //   {"label": "NBA", "icon": Icons.sports_basketball},
+  //   {"label": "Premier League", "icon": Icons.sports_volleyball}
+  // ];
+  // void selectLeague(int index) {
+  //   setState(() {
+  //     _leagueIndex = index;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -130,24 +130,24 @@ class _FeedPageState extends State<FeedPage> {
                     const SizedBox(height: 16),
 
                     // Горизонтальный список лиг (с иконками)
-                    SizedBox(
-                      height: 60,
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: [
-                          ...leagues.map((e) {
-                            int index = leagues.indexOf(e);
-                            return LeagueItem(
-                              label: e["label"],
-                              iconData: e['icon'],
-                              isSelected: _leagueIndex == index,
-                              onTap: () => selectLeague(index),
-                            );
-                          })
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 16),
+                    // SizedBox(
+                    //   height: 60,
+                    //   child: ListView(
+                    //     scrollDirection: Axis.horizontal,
+                    //     children: [
+                    //       ...leagues.map((e) {
+                    //         int index = leagues.indexOf(e);
+                    //         return LeagueItem(
+                    //           label: e["label"],
+                    //           iconData: e['icon'],
+                    //           isSelected: _leagueIndex == index,
+                    //           onTap: () => selectLeague(index),
+                    //         );
+                    //       })
+                    //     ],
+                    //   ),
+                    // ),
+                    // const SizedBox(height: 16),
 
                     // -----------------------------
                     const Text(
@@ -251,8 +251,6 @@ class _FeedPageState extends State<FeedPage> {
       ),
     );
   }
-
-  // Виджет для горизонтальной прокрутки лиг
 
   // Виджет карточки новостей (Feed)
   Widget _buildFeedCard({

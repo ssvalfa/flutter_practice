@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+// ignore: unused_import
+import 'package:go_router/go_router.dart';
+import 'package:flutter_application_1/widgets/upcoming_card.dart';
 
 class UpcomingMatchesListPage extends StatelessWidget {
   const UpcomingMatchesListPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Match data structure directly defined within the build method
     final matches = [
       {
         'homeTeam': 'Arsenal',
@@ -52,118 +54,26 @@ class UpcomingMatchesListPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: Container(
-          decoration: BoxDecoration(
-            color: Colors.grey[900],
-            borderRadius: BorderRadius.circular(20),
-          ),
-        ),
+        title: const Text('Upcoming Matches'),
       ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Upcoming Matches',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-              const SizedBox(height: 20),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: matches.length,
-                  itemBuilder: (context, index) {
-                    final match = matches[index];
+          child: ListView.builder(
+            itemCount: matches.length,
+            itemBuilder: (context, index) {
+              final match = matches[index];
 
-                    // Match card implementation directly in the list builder
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 16.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(
-                            color: Colors.grey.shade800,
-                            width: 1,
-                          ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Row(
-                            children: [
-                              // Team logos
-                              Row(
-                                children: [
-                                  CircleAvatar(
-                                    radius: 32,
-                                    backgroundColor: Colors.black26,
-                                    child: Image.asset(
-                                      match['homeTeamLogo']!,
-                                      height: 45,
-                                      errorBuilder:
-                                          (context, error, stackTrace) => Text(
-                                              match['homeTeam']!
-                                                  .substring(0, 1),
-                                              style: const TextStyle(
-                                                  fontSize: 20)),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  CircleAvatar(
-                                    radius: 32,
-                                    backgroundColor: Colors.black26,
-                                    child: Image.asset(
-                                      match['awayTeamLogo']!,
-                                      height: 45,
-                                      errorBuilder:
-                                          (context, error, stackTrace) => Text(
-                                              match['awayTeam']!
-                                                  .substring(0, 1),
-                                              style: const TextStyle(
-                                                  fontSize: 20)),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(width: 16),
-                              // Match details
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      '${match['homeTeam']} VS ${match['awayTeam']}',
-                                      style: const TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 8),
-                                    Text(
-                                      '${match['date']} · ${match['time']}',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        color: Colors.green.shade400,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
-                  },
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 16.0),
+                child: UpcomingCard(
+                  leagueLogo1: match['homeTeamLogo']!,
+                  leagueLogo2: match['awayTeamLogo']!,
+                  matchTitle: '${match['homeTeam']} VS ${match['awayTeam']}',
+                  matchDate: '${match['date']} · ${match['time']}',
                 ),
-              ),
-            ],
+              );
+            },
           ),
         ),
       ),
