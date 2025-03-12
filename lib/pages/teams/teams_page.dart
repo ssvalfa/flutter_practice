@@ -13,7 +13,7 @@ class TeamsPage extends StatefulWidget {
 
 class _TeamsPageState extends State<TeamsPage> {
   late Future<List<Team>> futureData;
-  int _selectedLeagueIndex = 0; // Индекс выбранной лиги
+  int? _selectedLeagueIndex; // Индекс выбранной лиги
 
   List<Map<String, dynamic>> leagues = [
     {"label": "Football", "icon": Icons.sports_soccer, "filter": "football"},
@@ -45,8 +45,13 @@ class _TeamsPageState extends State<TeamsPage> {
 
   void selectLeague(int index) {
     setState(() {
-      _selectedLeagueIndex = index;
-      futureData = loadData(leagues[index]["filter"]);
+      if (_selectedLeagueIndex == index) {
+        _selectedLeagueIndex = null;
+        futureData = loadData(null);
+      } else {
+        _selectedLeagueIndex = index;
+        futureData = loadData(leagues[index]["filter"]);
+      }
     });
   }
 
@@ -58,47 +63,55 @@ class _TeamsPageState extends State<TeamsPage> {
         backgroundColor: Colors.black,
         title: const Text("Teams", style: TextStyle(color: Colors.white)),
       ),
+      floatingActionButtonLocation:
+          FloatingActionButtonLocation.miniCenterFloat,
+      floatingActionButton: FloatingActionButton.extended(
+          onPressed: () {
+            setState(() {
+              _selectedLeagueIndex = null;
+              futureData = loadData(null);
+            });
+          },
+          label: const Text("Reset Filter")),
       body: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(
-            child: SizedBox(
-              height: 60,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: leagues.length,
-                itemBuilder: (context, index) {
-                  final league = leagues[index];
-                  final isSelected = _selectedLeagueIndex == index;
-
-                  return GestureDetector(
-                    onTap: () => selectLeague(index),
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 8),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 10),
-                      decoration: BoxDecoration(
-                        color:
-                            isSelected ? Colors.blueAccent : Colors.grey[900],
-                        borderRadius: BorderRadius.circular(20),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: leagues.map((league) {
+                  final isSelected =
+                      _selectedLeagueIndex == leagues.indexOf(league);
+                  return Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 4),
+                    child: FilledButton.icon(
+                      style: ButtonStyle(
+                        padding: WidgetStateProperty.all<EdgeInsets>(
+                            const EdgeInsets.all(20)),
+                        backgroundColor:
+                            WidgetStateProperty.resolveWith<Color>((states) {
+                          return isSelected
+                              ? Colors.blueAccent
+                              : Colors.grey[900]!;
+                        }),
                       ),
-                      child: Row(
-                        children: [
-                          Icon(league["icon"], color: Colors.white),
-                          const SizedBox(width: 8),
-                          Text(
-                            league["label"],
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: isSelected
-                                  ? FontWeight.bold
-                                  : FontWeight.normal,
-                            ),
-                          ),
-                        ],
+                      icon: Icon(
+                        league["icon"],
+                        color: Colors.white,
+                        size: 28,
+                      ),
+                      onPressed: () => selectLeague(leagues.indexOf(league)),
+                      label: Text(
+                        league["label"],
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight:
+                              isSelected ? FontWeight.bold : FontWeight.normal,
+                        ),
                       ),
                     ),
                   );
-                },
+                }).toList(),
               ),
             ),
           ),
@@ -161,20 +174,6 @@ class _TeamsPageState extends State<TeamsPage> {
                 );
               }
             },
-          ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    _selectedLeagueIndex = 0;
-                    futureData = loadData(null);
-                  });
-                },
-                child: const Text("Reset filter"),
-              ),
-            ),
           ),
         ],
       ),
