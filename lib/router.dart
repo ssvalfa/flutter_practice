@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/pages/upcominglist.dart';
+import 'package:flutter_application_1/pages/upcoming_list.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_application_1/pages/teams/teams_page.dart';
-import 'package:flutter_application_1/pages/feeddetailed.dart';
+import 'package:flutter_application_1/pages/feed_detailed.dart';
 import 'package:flutter_application_1/pages/login.dart';
 import 'package:flutter_application_1/pages/signup.dart';
 import 'package:flutter_application_1/pages/match_detailed.dart';
-import 'package:flutter_application_1/pages/upcomingmatches_detailed.dart';
+import 'package:flutter_application_1/pages/upcoming_matches_detailed.dart';
 import 'package:flutter_application_1/pages/teams/teams_detailed.dart';
 // ignore: duplicate_import
-import 'package:flutter_application_1/pages/upcominglist.dart';
+import 'package:flutter_application_1/pages/upcoming_list.dart';
 import 'package:flutter_application_1/services/pocketbase_service.dart';
 
 import 'pages/homepage.dart';

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 // ignore: unused_import
 import 'package:flutter_application_1/pages/teams/teams_page.dart';
 import 'package:flutter_application_1/widgets/live_card.dart';
-import 'package:flutter_application_1/widgets/leagueIcons.dart';
+import 'package:flutter_application_1/widgets/league_Icons.dart';
 import 'package:flutter_application_1/widgets/upcoming_card.dart';
 import 'package:go_router/go_router.dart';
 
