@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-// ignore: unused_import
-import 'package:go_router/go_router.dart';
 import 'package:flutter_application_1/router.dart';
 import 'package:flutter_application_1/services/pocketbase_service.dart';
 
 Future<void> main() async {
-  runApp(SportlyApp());
+  runApp(const SportlyApp());
   WidgetsFlutterBinding.ensureInitialized();
   await pocketBaseService.initAuth();
 }
