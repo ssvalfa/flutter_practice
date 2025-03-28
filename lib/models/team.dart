@@ -8,7 +8,6 @@ class Team {
   final String title;
   final String updated;
   final String type;
-
   Team(
       {required this.collectionId,
       required this.collectionName,

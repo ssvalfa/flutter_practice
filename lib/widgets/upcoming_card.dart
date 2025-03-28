@@ -6,12 +6,14 @@ class UpcomingCard extends StatelessWidget {
   final String leagueLogo2;
   final String matchTitle;
   final String matchDate;
+  final DateTime date;
 
-  UpcomingCard(
+  const UpcomingCard(
       {super.key,
       required this.leagueLogo1,
       required this.leagueLogo2,
       required this.matchTitle,
+      required this.date,
       required this.matchDate});
 
   @override
@@ -66,6 +68,7 @@ class UpcomingCard extends StatelessWidget {
                   ],
                 ),
               ),
+              date.isAfter(DateTime.now()) ? Text("After") : Text("Before")
             ],
           ),
         ));

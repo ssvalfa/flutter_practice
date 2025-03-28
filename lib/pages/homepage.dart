@@ -192,19 +192,19 @@ class _FeedPageState extends State<FeedPage> {
                     ),
                     const SizedBox(height: 8),
                     UpcomingCard(
-                      leagueLogo1: 'https://placehold.co/6x6.png', // пример
-                      leagueLogo2: 'https://placehold.co/6x6.png',
-                      matchTitle: 'Aersenal VS Dortmund',
-                      matchDate: 'Tuesday, 9 Mar 2021, 05.00 am',
-                    ),
+                        leagueLogo1: 'https://placehold.co/6x6.png', // пример
+                        leagueLogo2: 'https://placehold.co/6x6.png',
+                        matchTitle: 'Aersenal VS Dortmund',
+                        matchDate: 'Tuesday, 9 Mar 2021, 05.00 am',
+                        date: DateTime.now()),
                     const SizedBox(height: 8),
 
                     UpcomingCard(
-                      leagueLogo1: 'https://placehold.co/8x8.png', // пример
-                      leagueLogo2: 'https://placehold.co/8x8.png',
-                      matchTitle: 'Bayem VS Man United',
-                      matchDate: 'Tuesday, 16 Mar 2021, 05.00 am',
-                    ),
+                        leagueLogo1: 'https://placehold.co/8x8.png', // пример
+                        leagueLogo2: 'https://placehold.co/8x8.png',
+                        matchTitle: 'Bayem VS Man United',
+                        matchDate: 'Tuesday, 16 Mar 2021, 05.00 am',
+                        date: DateTime.now()),
                     const SizedBox(height: 24),
 
                     // Feed
