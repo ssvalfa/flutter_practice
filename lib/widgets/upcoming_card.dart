@@ -33,13 +33,13 @@ class UpcomingCard extends StatelessWidget {
               // Лого лиги / команды
               CircleAvatar(
                 radius: 18,
-                backgroundImage: AssetImage(leagueLogo1), // Placeholder
+                backgroundImage: NetworkImage(leagueLogo1), // Placeholder
                 backgroundColor:
                     Colors.white24, // На случай отсутствия изображения
               ),
               CircleAvatar(
                 radius: 18,
-                backgroundImage: AssetImage(leagueLogo2), // Placeholder
+                backgroundImage: NetworkImage(leagueLogo2), // Placeholder
                 backgroundColor:
                     Colors.white24, // На случай отсутствия изображения
               ),

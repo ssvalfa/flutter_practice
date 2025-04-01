@@ -1,9 +1,10 @@
+import 'package:flutter_application_1/utils/constants.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PocketBaseService {
   static final PocketBaseService _instance = PocketBaseService._internal();
-  final PocketBase pb = PocketBase('https://restaurant-menu.fly.dev');
+  final PocketBase pb = PocketBase(AppConstants.url);
 
   factory PocketBaseService() {
     return _instance;

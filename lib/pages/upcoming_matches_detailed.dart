@@ -35,7 +35,9 @@ class UpcomingMatchesPage extends StatelessWidget {
           const Text(
             "Manchester United VS Barcelona",
             style: TextStyle(
-                color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                color: Color.fromARGB(255, 251, 78, 78),
+                fontSize: 18,
+                fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 5),
           const Text("UEFA Champions League",
@@ -44,7 +46,7 @@ class UpcomingMatchesPage extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _teamLogo("assets/man_utd.png", "HOME"),
+              _teamLogo("https://placehold.co/50x50.png", "HOME"),
               const Text(
                 "- VS -",
                 style: TextStyle(fontSize: 22, color: Colors.white),
@@ -69,7 +71,7 @@ class UpcomingMatchesPage extends StatelessWidget {
   Widget _teamLogo(String assetPath, String label) {
     return Column(
       children: [
-        Image.asset(assetPath, width: 50),
+        Image.network(assetPath, width: 50),
         const SizedBox(height: 5),
         Text(label, style: const TextStyle(color: Colors.white54)),
       ],

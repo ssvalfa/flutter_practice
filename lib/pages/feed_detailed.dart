@@ -20,30 +20,12 @@ class FeedDetailed extends StatelessWidget {
           // Image Section
           Stack(
             children: [
-              Image.asset(
+              Image.network(
                 'https://placehold.co/400x400.png', // Replace with your asset image path
                 height: 300,
                 width: double.infinity,
                 fit: BoxFit.cover,
-              ),
-              const Positioned(
-                top: 40,
-                left: 16,
-                child: Icon(
-                  Icons.arrow_back,
-                  color: Colors.white,
-                  size: 28,
-                ),
-              ),
-              const Positioned(
-                top: 40,
-                right: 16,
-                child: Icon(
-                  Icons.more_vert,
-                  color: Colors.white,
-                  size: 28,
-                ),
-              ),
+              )
             ],
           ),
 
@@ -59,17 +41,7 @@ class FeedDetailed extends StatelessWidget {
                       "2 hours ago",
                     ),
                     Spacer(),
-                    Icon(Icons.comment, size: 20, color: Colors.grey),
                     SizedBox(width: 8),
-                    Text(
-                      "27",
-                    ),
-                    SizedBox(width: 16),
-                    Icon(Icons.visibility, size: 20, color: Colors.grey),
-                    SizedBox(width: 8),
-                    Text(
-                      "916",
-                    ),
                   ],
                 ),
                 SizedBox(height: 16),
