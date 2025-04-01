@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/services/pocketbase_service.dart';
 import 'package:flutter_application_1/widgets/live_card.dart';
-import 'package:flutter_application_1/widgets/upcoming_card.dart';
 
 import '../../models/team.dart';
 

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-// ignore: unused_import
-import 'package:flutter_application_1/pages/teams/teams_page.dart';
+import 'package:flutter_application_1/utils/constants.dart';
 import 'package:flutter_application_1/widgets/live_card.dart';
-// import 'package:flutter_application_1/widgets/league_Icons.dart';
 import 'package:flutter_application_1/widgets/upcoming_card.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_application_1/widgets/feed_card.dart';
 
 class FeedPage extends StatefulWidget {
   const FeedPage({super.key});
@@ -192,7 +191,7 @@ class _FeedPageState extends State<FeedPage> {
                     ),
                     const SizedBox(height: 8),
                     UpcomingCard(
-                        leagueLogo1: 'https://placehold.co/6x6.png', // пример
+                        leagueLogo1: '', // пример
                         leagueLogo2: 'https://placehold.co/6x6.png',
                         matchTitle: 'Aersenal VS Dortmund',
                         matchDate: 'Tuesday, 9 Mar 2021, 05.00 am',
@@ -225,7 +224,7 @@ class _FeedPageState extends State<FeedPage> {
                     const SizedBox(height: 16),
 
                     // Пример карточек новостей
-                    _buildFeedCard(
+                    FeedCard(
                       tag: 'Women’s League',
                       title: 'As it happened: Spain win final',
                       subtitle:
@@ -233,7 +232,7 @@ class _FeedPageState extends State<FeedPage> {
                       imageUrl: 'https://placehold.co/600x400.png', // заглушка
                     ),
                     const SizedBox(height: 16),
-                    _buildFeedCard(
+                    FeedCard(
                       tag: 'World Soccer',
                       title: 'Quarter - Finals ties set',
                       subtitle:
@@ -246,93 +245,6 @@ class _FeedPageState extends State<FeedPage> {
                 ),
               ),
             ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  // Виджет карточки новостей (Feed)
-  Widget _buildFeedCard({
-    required String tag,
-    required String title,
-    required String subtitle,
-    required String imageUrl,
-  }) {
-    return GestureDetector(
-      onTap: () {
-        context.push('/feeddetailed'); // Переход на страницу с деталями
-      },
-      child: Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: const Color(0xFF2C2C2C),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Column(
-          children: [
-            // Изображение сверху
-            ClipRRect(
-              borderRadius:
-                  const BorderRadius.vertical(top: Radius.circular(12)),
-              child: Image.network(
-                imageUrl,
-                height: 160,
-                width: double.infinity,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) => Container(
-                  height: 160,
-                  width: double.infinity,
-                  color: Colors.grey,
-                  child: const Icon(Icons.broken_image,
-                      color: Colors.white, size: 50),
-                ),
-              ),
-            ),
-            // Контент карточки
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Тег / категория
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: Colors.teal,
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Text(
-                      tag,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 10,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  // Заголовок новости
-                  Text(
-                    title,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  // Подзаголовок
-                  Text(
-                    subtitle,
-                    style: TextStyle(
-                      color: Colors.white.withOpacity(0.7),
-                      fontSize: 12,
-                    ),
-                  ),
-                ],
-              ),
-            )
           ],
         ),
       ),

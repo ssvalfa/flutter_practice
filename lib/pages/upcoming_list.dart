@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/match.dart';
 import 'package:flutter_application_1/services/pocketbase_service.dart';
-// ignore: unused_import
-import 'package:go_router/go_router.dart';
 import 'package:flutter_application_1/widgets/upcoming_card.dart';
+
+import '../utils/constants.dart';
 
 class UpcomingMatchesListPage extends StatefulWidget {
   const UpcomingMatchesListPage({super.key});
@@ -63,8 +63,10 @@ class _UpcomingMatchesListPageState extends State<UpcomingMatchesListPage> {
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 16.0),
                       child: UpcomingCard(
-                        leagueLogo1: 'https://placehold.co/40x40.jpg',
-                        leagueLogo2: 'https://placehold.co/40x40.jpg',
+                        leagueLogo1:
+                            '${AppConstants.url}/api/files/${match.home.collectionId}/${match.home.id}/${match.home.img}',
+                        leagueLogo2:
+                            '${AppConstants.url}/api/files/${match.guest.collectionId}/${match.guest.id}/${match.guest.img}',
                         date: match.date,
                         matchTitle:
                             '${match.home.title} VS ${match.guest.title}',
