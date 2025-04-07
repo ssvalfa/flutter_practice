@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/utils/constants.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_application_1/models/feed.dart';
-
 import '../../services/pocketbase_service.dart';
 
 class FeedDetailScreen extends StatefulWidget {
@@ -10,17 +9,22 @@ class FeedDetailScreen extends StatefulWidget {
   const FeedDetailScreen({super.key, required this.id});
 
   @override
-  State<FeedDetailScreen> createState() => _NewsDetailScreenState();
+  State<FeedDetailScreen> createState() => _FeedDetailScreenState();
 }
 
-class _NewsDetailScreenState extends State<FeedDetailScreen> {
+class _FeedDetailScreenState extends State<FeedDetailScreen> {
   late Future<SportFeed> _newsFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _newsFuture = fetchNews();
+  }
 
   Future<SportFeed> fetchNews() async {
     try {
       final records =
           await pocketBaseService.pb.collection('sport_feed').getOne(widget.id);
-
       SportFeed news = SportFeed.fromJson(records.toJson());
       return news;
     } catch (e) {
@@ -29,26 +33,11 @@ class _NewsDetailScreenState extends State<FeedDetailScreen> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    _newsFuture = fetchNews();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final double height = MediaQuery.sizeOf(context).height;
-
     return Scaffold(
-      appBar: AppBar(
-        title: FutureBuilder<SportFeed>(
-          future: _newsFuture,
-          builder: (context, snapshot) {
-            return Text(snapshot.hasData ? snapshot.data!.type : 'Loading....');
-          },
-        ),
-      ),
+      backgroundColor: const Color(0xFF212121),
       body: SafeArea(
-        child: FutureBuilder(
+        child: FutureBuilder<SportFeed>(
           future: _newsFuture,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
@@ -57,59 +46,94 @@ class _NewsDetailScreenState extends State<FeedDetailScreen> {
               return Center(child: Text('Error: ${snapshot.error}'));
             } else if (!snapshot.hasData) {
               return const Center(child: Text('No news available.'));
-            } else {
-              final news = snapshot.data!;
-              return SingleChildScrollView(
-                padding: const EdgeInsets.only(bottom: 120),
+            }
+
+            final news = snapshot.data!;
+
+            return SingleChildScrollView(
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Display just one image
-                    SizedBox(
-                      height: MediaQuery.of(context).size.width * 0.9,
+                    // Top row with back, share, and bookmark
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.arrow_back_ios_new_rounded),
+                          onPressed: () => Navigator.pop(context),
+                        ),
+                        Row(
+                          children: const [
+                            Icon(Icons.share_outlined),
+                            SizedBox(width: 12),
+                            Icon(Icons.bookmark_border),
+                          ],
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+
+                    // Category label and date
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFE5E4FB),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Text(
+                            news.type,
+                            style: const TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xFF5F50E9),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Text(
+                          AppConstants.formatDate(news.created),
+                          style:
+                              const TextStyle(color: Colors.grey, fontSize: 12),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 14),
+
+                    // Title
+                    Text(
+                      news.title,
+                      style: const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+
+                    // Image
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
                       child: Image.network(
                         '${AppConstants.url}/api/files/${news.collectionId}/${news.id}/${news.img}',
-                        fit: BoxFit.cover,
                         width: double.infinity,
-                        height: height / 2,
+                        height: 240,
+                        fit: BoxFit.cover,
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          // This can be omitted or customized as per your need
-                          const SizedBox(width: 8),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          left: 16, right: 16, top: 0, bottom: 8),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            news.title,
-                            style: Theme.of(context).textTheme.titleLarge,
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            AppConstants.formatDate(news.created),
-                            style: Theme.of(context).textTheme.bodySmall,
-                          ),
-                          const SizedBox(height: 6),
-                          Html(
-                            data: news.content,
-                          ),
-                        ],
-                      ),
-                    ),
+                    const SizedBox(height: 24),
+
+                    // Content
+                    Html(data: news.content),
+                    const SizedBox(height: 30),
                   ],
                 ),
-              );
-            }
+              ),
+            );
           },
         ),
       ),
