@@ -1,96 +1,90 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_application_1/models/feed.dart';
+
+import '../../utils/constants.dart';
 
 class FeedCard extends StatelessWidget {
-  final String tag;
-  final String title;
-  final String subtitle;
-  final String imageUrl;
+  final SportFeed feed;
 
-  const FeedCard({
-    super.key,
-    required this.tag,
-    required this.title,
-    required this.subtitle,
-    required this.imageUrl,
-  });
+  const FeedCard({super.key, required this.feed});
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        context.push('/feeddetailed'); // Переход на страницу с деталями
-      },
-      child: Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: const Color(0xFF2C2C2C),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Column(
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(8),
+        onTap: () {
+          context.push('/feed/${feed.id}');
+        },
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Изображение сверху
             ClipRRect(
-              borderRadius:
-                  const BorderRadius.vertical(top: Radius.circular(12)),
+              borderRadius: BorderRadius.circular(8),
               child: Image.network(
-                imageUrl,
-                height: 160,
-                width: double.infinity,
+                '${AppConstants.url}/api/files/${feed.collectionId}/${feed.id}/${feed.img}',
+                width: 100,
+                height: 100,
                 fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) => Container(
-                  height: 160,
-                  width: double.infinity,
+                  width: 100,
+                  height: 100,
                   color: Colors.grey,
-                  child: const Icon(Icons.broken_image,
-                      color: Colors.white, size: 50),
+                  child: const Icon(Icons.broken_image, color: Colors.white),
                 ),
               ),
             ),
-            // Контент карточки
-            Padding(
-              padding: const EdgeInsets.all(16.0),
+            const SizedBox(width: 12),
+            Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Тег / категория
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: Colors.teal,
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Text(
-                      tag,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 10,
-                      ),
+                  Text(
+                    feed.type,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        fontSize: 12,
+                        color: Theme.of(context)
+                            .textTheme
+                            .bodySmall
+                            ?.color
+                            ?.withOpacity(0.7)),
+                  ),
+                  Text(
+                    feed.title,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   const SizedBox(height: 8),
-                  // Заголовок новости
                   Text(
-                    title,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    feed.description,
+                    maxLines: 5, // Limit to 3 lines for readability
+                    overflow: TextOverflow
+                        .ellipsis, // Handle overflow with an ellipsis
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Theme.of(context)
+                            .textTheme
+                            .bodyMedium
+                            ?.color
+                            ?.withOpacity(0.8)),
                   ),
-                  const SizedBox(height: 4),
-                  // Подзаголовок
-                  Text(
-                    subtitle,
-                    style: TextStyle(
-                      color: Colors.white.withOpacity(0.7),
-                      fontSize: 12,
-                    ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      const SizedBox(width: 8),
+                      Text(
+                        AppConstants.formatDate(feed.created),
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                    ],
                   ),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),

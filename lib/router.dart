@@ -29,48 +29,54 @@ Page<void> noTransitionPageBuilder(
 }
 
 final router = GoRouter(
-    navigatorKey: _parentKey,
-    redirect: (context, state) {
-      final isAuthenticated = pocketBaseService.isAuthenticated();
-      final isLoggingIn = state.matchedLocation == '/login';
-      final isSigningUp = state.matchedLocation == '/signup';
+  navigatorKey: _parentKey,
+  redirect: (context, state) {
+    final isAuthenticated = pocketBaseService.isAuthenticated();
+    final isLoggingIn = state.matchedLocation == '/login';
+    final isSigningUp = state.matchedLocation == '/signup';
 
-      if (!isAuthenticated && !isLoggingIn && !isSigningUp) {
-        return '/login'; // Redirect to login if not authenticated and not on login/signu
-      }
-      if (isAuthenticated && (isLoggingIn || isSigningUp)) {
-        return '/'; // Redirect authenticated users away from login/signup pages
-      }
-      return null;
-    },
-    routes: [
-      GoRoute(path: '/', builder: (context, state) => const FeedPage()),
-      GoRoute(path: '/login', builder: (context, state) => const LoginPage()),
-      GoRoute(path: '/signup', builder: (context, state) => const SignupPage()),
-      GoRoute(
-          path: '/upcomingmatches',
-          builder: (context, state) => const UpcomingMatchesPage()),
-      GoRoute(
-          path: '/matchdetail',
-          builder: (context, state) => const MatchDetailPage()),
-      GoRoute(path: '/teams', builder: (context, state) => const TeamsPage()),
-      GoRoute(
-          path: '/teams/:id',
-          builder: (context, state) {
-            final id = state.pathParameters['id']!;
-            final extra = state.extra as Map<String, dynamic>?;
-            return TeamsDetailedPage(
-              id: id,
-              title: extra?['title'] ?? 'Title',
-            );
-          }),
-      GoRoute(
-          path: '/feeddetailed',
-          builder: (context, state) => const FeedDetailed()),
-      GoRoute(
-          path: '/upcoming',
-          builder: (context, state) => const UpcomingMatchesPage()),
-      GoRoute(
-          path: '/upcominglist',
-          builder: (context, state) => const UpcomingMatchesListPage())
-    ]);
+    if (!isAuthenticated && !isLoggingIn && !isSigningUp) {
+      return '/login'; // Redirect to login if not authenticated and not on login/signup
+    }
+    if (isAuthenticated && (isLoggingIn || isSigningUp)) {
+      return '/'; // Redirect authenticated users away from login/signup pages
+    }
+    return null;
+  },
+  routes: [
+    GoRoute(path: '/', builder: (context, state) => const FeedPage()),
+    GoRoute(
+      path: '/feed/:id',
+      builder: (context, state) {
+        final id = state.pathParameters['id']!;
+        return FeedDetailScreen(id: id); // Pass the id here
+      },
+    ),
+    GoRoute(path: '/login', builder: (context, state) => const LoginPage()),
+    GoRoute(path: '/signup', builder: (context, state) => const SignupPage()),
+    GoRoute(
+        path: '/upcomingmatches',
+        builder: (context, state) => const UpcomingMatchesPage()),
+    GoRoute(
+        path: '/matchdetail',
+        builder: (context, state) => const MatchDetailPage()),
+    GoRoute(path: '/teams', builder: (context, state) => const TeamsPage()),
+    GoRoute(
+      path: '/teams/:id',
+      builder: (context, state) {
+        final id = state.pathParameters['id']!;
+        final extra = state.extra as Map<String, dynamic>?;
+        return TeamsDetailedPage(
+          id: id,
+          title: extra?['title'] ?? 'Title',
+        );
+      },
+    ),
+    GoRoute(
+        path: '/upcoming',
+        builder: (context, state) => const UpcomingMatchesPage()),
+    GoRoute(
+        path: '/upcominglist',
+        builder: (context, state) => const UpcomingMatchesListPage())
+  ],
+);
