@@ -14,10 +14,10 @@ class UpcomingMatchesListPage extends StatefulWidget {
 }
 
 class _UpcomingMatchesListPageState extends State<UpcomingMatchesListPage> {
-  late Future<List<GameMatch>> future;
+  late Future<List<GameMatch>> _futureMatches;
   @override
   void initState() {
-    future = loadData();
+    _futureMatches = loadData();
     super.initState();
   }
 
@@ -37,47 +37,31 @@ class _UpcomingMatchesListPageState extends State<UpcomingMatchesListPage> {
         title: const Text('Upcoming Matches'),
       ),
       body: SafeArea(
-        child: FutureBuilder(
-            future: future,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else if (snapshot.hasError) {
-                return Center(
-                    child: Text('Error: ${snapshot.error}',
-                        style: const TextStyle(color: Colors.white)));
-              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return const Center(
-                    child: Text('No matches available.',
-                        style: TextStyle(color: Colors.white)));
-              } else {
-                var matches = snapshot.data!;
-                return ListView.builder(
-                  padding: const EdgeInsets.all(16),
-                  itemCount: matches.length,
-                  itemBuilder: (context, index) {
-                    final match = matches[index];
-
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 16.0),
-                      child: UpcomingCard(
-                        leagueLogo1:
-                            '${AppConstants.url}/api/files/${match.home.collectionId}/${match.home.id}/${match.home.img}',
-                        leagueLogo2:
-                            '${AppConstants.url}/api/files/${match.guest.collectionId}/${match.guest.id}/${match.guest.img}',
-                        date: match.date,
-                        matchTitle:
-                            '${match.home.title} VS ${match.guest.title}',
-                        matchDate:
-                            '${match.date.day}/${match.date.month}/${match.date.year} · ${match.date.hour}:${match.date.minute} · ${match.location.club.title}',
-                      ),
-                    );
-                  },
-                );
-              }
-            }),
+        child: FutureBuilder<List<GameMatch>>(
+          future: _futureMatches,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Text('Error loading matches: ${snapshot.error}',
+                  style: TextStyle(color: Colors.white));
+            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return const Text('No upcoming matches.',
+                  style: TextStyle(color: Colors.white));
+            } else {
+              final matches = snapshot.data!;
+              return Column(
+                children: matches
+                    .take(2)
+                    .map((match) => Padding(
+                          padding: const EdgeInsets.only(bottom: 8),
+                          child: UpcomingCard(match: match),
+                        ))
+                    .toList(),
+              );
+            }
+          },
+        ),
       ),
     );
   }

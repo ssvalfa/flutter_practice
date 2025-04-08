@@ -5,8 +5,8 @@ class GameMatch {
   final String id;
   final String collectionId;
   final String collectionName;
-  final String created;
-  final String updated;
+  final DateTime created;
+  final DateTime updated;
   final Team home;
   final Team guest;
   final DateTime date;

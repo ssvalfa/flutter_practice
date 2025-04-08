@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/feed.dart';
+import 'package:flutter_application_1/models/match.dart';
 import 'package:flutter_application_1/services/pocketbase_service.dart';
 import 'package:flutter_application_1/widgets/live_card.dart';
 import 'package:flutter_application_1/widgets/upcoming_card.dart';
@@ -15,10 +16,20 @@ class FeedPage extends StatefulWidget {
 
 class _FeedPageState extends State<FeedPage> {
   late Future<List<SportFeed>> _futureFeed;
+  late Future<List<GameMatch>> _futureMatches;
+  @override
   @override
   void initState() {
     super.initState();
     _futureFeed = fetchNews();
+    _futureMatches = fetchMatches();
+  }
+
+  Future<List<GameMatch>> fetchMatches() async {
+    final record = await pocketBaseService.pb
+        .collection("sport_match")
+        .getFullList(expand: 'location.club, home, guest');
+    return record.map((el) => GameMatch.fromJson(el.toJson())).toList();
   }
 
   Future<List<SportFeed>> fetchNews() async {
@@ -205,23 +216,38 @@ class _FeedPageState extends State<FeedPage> {
                                 ),
                               ],
                             ),
-                            const SizedBox(height: 8),
-                            UpcomingCard(
-                                leagueLogo1: '', // пример
-                                leagueLogo2: 'https://placehold.co/6x6.png',
-                                matchTitle: 'Aersenal VS Dortmund',
-                                matchDate: 'Tuesday, 9 Mar 2021, 05.00 am',
-                                date: DateTime.now()),
-                            const SizedBox(height: 8),
 
-                            UpcomingCard(
-                                leagueLogo1:
-                                    'https://placehold.co/8x8.png', // пример
-                                leagueLogo2: 'https://placehold.co/8x8.png',
-                                matchTitle: 'Bayem VS Man United',
-                                matchDate: 'Tuesday, 16 Mar 2021, 05.00 am',
-                                date: DateTime.now()),
-                            const SizedBox(height: 24),
+                            const SizedBox(height: 8),
+                            FutureBuilder<List<GameMatch>>(
+                              future: _futureMatches,
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return const Center(
+                                      child: CircularProgressIndicator());
+                                } else if (snapshot.hasError) {
+                                  return Text(
+                                      'Error loading matches: ${snapshot.error}',
+                                      style: TextStyle(color: Colors.white));
+                                } else if (!snapshot.hasData ||
+                                    snapshot.data!.isEmpty) {
+                                  return const Text('No upcoming matches.',
+                                      style: TextStyle(color: Colors.white));
+                                } else {
+                                  final matches = snapshot.data!;
+                                  return Column(
+                                    children: matches
+                                        .take(2)
+                                        .map((match) => Padding(
+                                              padding: const EdgeInsets.only(
+                                                  bottom: 8),
+                                              child: UpcomingCard(match: match),
+                                            ))
+                                        .toList(),
+                                  );
+                                }
+                              },
+                            ),
 
                             // Feed
                             const Text(

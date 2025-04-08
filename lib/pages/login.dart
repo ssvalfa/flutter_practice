@@ -49,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Login'),
+        title: const Text('Sportly'),
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -60,7 +60,7 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const FlutterLogo(size: 100),
+                const Icon(Icons.sports_basketball, size: 100),
                 const SizedBox(height: 32),
                 TextFormField(
                   controller: _usernameController,

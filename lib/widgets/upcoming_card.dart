@@ -1,26 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/models/match.dart';
+import 'package:flutter_application_1/utils/constants.dart';
 import 'package:go_router/go_router.dart';
 
 class UpcomingCard extends StatelessWidget {
-  final String leagueLogo1;
-  final String leagueLogo2;
-  final String matchTitle;
-  final String matchDate;
-  final DateTime date;
+  final GameMatch match;
 
-  const UpcomingCard(
-      {super.key,
-      required this.leagueLogo1,
-      required this.leagueLogo2,
-      required this.matchTitle,
-      required this.date,
-      required this.matchDate});
+  const UpcomingCard({super.key, required this.match});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
-          context.push('/upcoming');
+          context.push('/match/${match.id}');
         },
         child: Container(
           padding: const EdgeInsets.all(16),
@@ -33,13 +25,17 @@ class UpcomingCard extends StatelessWidget {
               // Лого лиги / команды
               CircleAvatar(
                 radius: 18,
-                backgroundImage: NetworkImage(leagueLogo1), // Placeholder
+                backgroundImage: NetworkImage(
+                  '${AppConstants.url}/api/files/${match.home.collectionId}/${match.home.id}/${match.home.img}',
+                ),
                 backgroundColor:
                     Colors.white24, // На случай отсутствия изображения
               ),
+              const SizedBox(width: 8),
               CircleAvatar(
                 radius: 18,
-                backgroundImage: NetworkImage(leagueLogo2), // Placeholder
+                backgroundImage: NetworkImage(
+                    '${AppConstants.url}/api/files/${match.guest.collectionId}/${match.guest.id}/${match.guest.img}'), // Placeholder
                 backgroundColor:
                     Colors.white24, // На случай отсутствия изображения
               ),
@@ -49,26 +45,24 @@ class UpcomingCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      matchTitle,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                    Text('${match.home.title} VS ${match.guest.title}'),
                     const SizedBox(height: 4),
                     Text(
-                      matchDate,
-                      style: TextStyle(
-                        color: Colors.white.withOpacity(0.6),
-                        fontSize: 12,
-                      ),
+                      AppConstants.formatDate(match.date),
+                      style: Theme.of(context).textTheme.bodySmall,
                     ),
                   ],
                 ),
               ),
-              date.isAfter(DateTime.now()) ? Text("After") : Text("Before")
+              Text(
+                match.date.isAfter(DateTime.now()) ? "Upcoming" : "Finished",
+                style: TextStyle(
+                  color: match.date.isAfter(DateTime.now())
+                      ? Colors.greenAccent
+                      : Colors.grey,
+                  fontWeight: FontWeight.bold,
+                ),
+              )
             ],
           ),
         ));
