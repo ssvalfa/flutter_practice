@@ -58,7 +58,6 @@ class _FeedPageState extends State<FeedPage> {
               expand: 'location.club, home, guest',
               filter: filter != null ? 'type="$filter"' : null,
             );
-    print(record);
     return record.map((el) => GameMatch.fromJson(el.toJson())).toList();
   }
 
@@ -162,10 +161,10 @@ class _FeedPageState extends State<FeedPage> {
                                   child: FilledButton.icon(
                                     onPressed: () => selectLeague(index),
                                     style: FilledButton.styleFrom(
-                                      backgroundColor: isSelected
-                                          ? Colors.blue
-                                          : Colors.grey[800],
-                                    ),
+                                        backgroundColor: isSelected
+                                            ? Color.fromARGB(255, 123, 184, 25)
+                                            : Colors.grey[800],
+                                        minimumSize: Size(50, 50)),
                                     icon: Icon(league["icon"],
                                         color: Colors.white),
                                     label: Text(league["label"],

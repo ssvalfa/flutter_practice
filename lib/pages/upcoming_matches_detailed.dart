@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/league.dart';
 import 'package:flutter_application_1/models/match.dart';
-import 'package:flutter_application_1/services/pocketbase_service.dart';
 import 'package:flutter_application_1/utils/constants.dart';
 
 class UpcomingMatchesPage extends StatelessWidget {
@@ -25,7 +24,7 @@ class UpcomingMatchesPage extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          _buildMatchCard(league as League?),
+          _buildMatchCard(league),
           const SizedBox(height: 20),
           _buildMatchDetails(),
         ],

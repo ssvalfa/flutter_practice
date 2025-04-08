@@ -3,7 +3,6 @@ import 'package:flutter_application_1/models/match.dart';
 import 'package:flutter_application_1/services/pocketbase_service.dart';
 import 'package:flutter_application_1/widgets/upcoming_card.dart';
 
-import '../utils/constants.dart';
 
 class UpcomingMatchesListPage extends StatefulWidget {
   const UpcomingMatchesListPage({super.key});
@@ -25,7 +24,6 @@ class _UpcomingMatchesListPageState extends State<UpcomingMatchesListPage> {
     final record = await pocketBaseService.pb
         .collection("sport_match")
         .getFullList(expand: 'location.club, home, guest');
-    print(record);
     return record.map((el) => GameMatch.fromJson(el.toJson())).toList();
   }
 

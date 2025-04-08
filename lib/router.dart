@@ -6,7 +6,6 @@ import 'package:flutter_application_1/pages/teams/teams_page.dart';
 import 'package:flutter_application_1/pages/feed_detailed.dart';
 import 'package:flutter_application_1/pages/login.dart';
 import 'package:flutter_application_1/pages/signup.dart';
-import 'package:flutter_application_1/pages/match_detailed.dart';
 import 'package:flutter_application_1/pages/upcoming_matches_detailed.dart';
 import 'package:flutter_application_1/pages/teams/teams_detailed.dart';
 
@@ -55,9 +54,6 @@ final router = GoRouter(
     ),
     GoRoute(path: '/login', builder: (context, state) => const LoginPage()),
     GoRoute(path: '/signup', builder: (context, state) => const SignupPage()),
-    GoRoute(
-        path: '/matchdetail',
-        builder: (context, state) => const MatchDetailPage()),
     GoRoute(path: '/teams', builder: (context, state) => const TeamsPage()),
     GoRoute(
       path: '/teams/:id',
