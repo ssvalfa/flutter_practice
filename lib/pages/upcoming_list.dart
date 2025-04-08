@@ -52,7 +52,7 @@ class _UpcomingMatchesListPageState extends State<UpcomingMatchesListPage> {
               final matches = snapshot.data!;
               return Column(
                 children: matches
-                    .take(2)
+                    .take(100)
                     .map((match) => Padding(
                           padding: const EdgeInsets.only(bottom: 8),
                           child: UpcomingCard(match: match),

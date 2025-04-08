@@ -1,21 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/models/league.dart';
+import 'package:flutter_application_1/models/match.dart';
+import 'package:flutter_application_1/services/pocketbase_service.dart';
+import 'package:flutter_application_1/utils/constants.dart';
 
 class UpcomingMatchesPage extends StatelessWidget {
-  const UpcomingMatchesPage({super.key});
+  final GameMatch match;
+
+  const UpcomingMatchesPage({super.key, required this.match});
 
   @override
   Widget build(BuildContext context) {
+    final league = match.home.league;
+
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: const Text("Upcoming Matches",
-            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+        title: Text(
+          "${match.home.title} vs ${match.guest.title}",
+          style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+        ),
       ),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          _buildMatchCard(),
+          _buildMatchCard(league as League?),
           const SizedBox(height: 20),
           _buildMatchDetails(),
         ],
@@ -23,7 +33,7 @@ class UpcomingMatchesPage extends StatelessWidget {
     );
   }
 
-  Widget _buildMatchCard() {
+  Widget _buildMatchCard(League? league) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -32,35 +42,38 @@ class UpcomingMatchesPage extends StatelessWidget {
       ),
       child: Column(
         children: [
-          const Text(
-            "Manchester United VS Barcelona",
-            style: TextStyle(
+          Text(
+            "${match.home.title} VS ${match.guest.title}",
+            style: const TextStyle(
                 color: Color.fromARGB(255, 251, 78, 78),
                 fontSize: 18,
                 fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 5),
-          const Text("UEFA Champions League",
-              style: TextStyle(color: Colors.green)),
+          if (league != null)
+            Text(league.title, style: const TextStyle(color: Colors.green)),
           const SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _teamLogo("https://placehold.co/50x50.png", "HOME"),
-              const Text(
-                "- VS -",
-                style: TextStyle(fontSize: 22, color: Colors.white),
-              ),
-              _teamLogo("assets/barcelona.png", "AWAY"),
+              _teamLogo(
+                  '${AppConstants.url}/api/files/${match.home.collectionId}/${match.home.id}/${match.home.img}',
+                  "HOME"),
+              const Text("- VS -",
+                  style: TextStyle(fontSize: 22, color: Colors.white)),
+              _teamLogo(
+                  '${AppConstants.url}/api/files/${match.guest.collectionId}/${match.guest.id}/${match.guest.img}',
+                  "AWAY"),
             ],
           ),
           const SizedBox(height: 10),
-          const Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.location_on, color: Colors.green),
-              SizedBox(width: 5),
-              Text("Old Trafford", style: TextStyle(color: Colors.green)),
+              const Icon(Icons.location_on, color: Colors.green),
+              const SizedBox(width: 5),
+              Text(match.location.title,
+                  style: const TextStyle(color: Colors.green)),
             ],
           ),
         ],
@@ -68,10 +81,10 @@ class UpcomingMatchesPage extends StatelessWidget {
     );
   }
 
-  Widget _teamLogo(String assetPath, String label) {
+  Widget _teamLogo(String imageUrl, String label) {
     return Column(
       children: [
-        Image.network(assetPath, width: 50),
+        Image.network(imageUrl, width: 50),
         const SizedBox(height: 5),
         Text(label, style: const TextStyle(color: Colors.white54)),
       ],
@@ -88,46 +101,12 @@ class UpcomingMatchesPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildTabBar(),
-          const SizedBox(height: 10),
-          _buildDetailRow("Date", "Tuesday, 9 March 2025"),
-          _buildDetailRow("Time", "05:00 AM"),
-          _buildDetailRow("Stadium", "Old Trafford"),
-          _buildDetailRow("Referee", "Michael Oliver"),
-          _buildDetailRow("Weather", "Cloudy, 12°C"),
-          _buildDetailRow("Tickets Available", "Yes"),
+          _buildDetailRow("Date",
+              "${match.date.day}/${match.date.month}/${match.date.year}"),
+          _buildDetailRow("Time",
+              "${match.date.hour.toString().padLeft(2, '0')}:${match.date.minute.toString().padLeft(2, '0')}"),
+          _buildDetailRow("Stadium", match.location.title),
         ],
-      ),
-    );
-  }
-
-  Widget _buildTabBar() {
-    return Row(
-      children: [
-        _tabButton("Match Info", isActive: true),
-        _tabButton("Lineup"),
-        _tabButton("Preview"),
-      ],
-    );
-  }
-
-  Widget _tabButton(String title, {bool isActive = false}) {
-    return Expanded(
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 4),
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          color: isActive ? Colors.white : Colors.black,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Text(
-          title,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: isActive ? Colors.black : Colors.white54,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
       ),
     );
   }

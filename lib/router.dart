@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/models/match.dart';
 import 'package:flutter_application_1/pages/upcoming_list.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_application_1/pages/teams/teams_page.dart';
@@ -8,7 +9,7 @@ import 'package:flutter_application_1/pages/signup.dart';
 import 'package:flutter_application_1/pages/match_detailed.dart';
 import 'package:flutter_application_1/pages/upcoming_matches_detailed.dart';
 import 'package:flutter_application_1/pages/teams/teams_detailed.dart';
-// ignore: duplicate_import
+
 import 'package:flutter_application_1/pages/upcoming_list.dart';
 import 'package:flutter_application_1/services/pocketbase_service.dart';
 
@@ -55,9 +56,6 @@ final router = GoRouter(
     GoRoute(path: '/login', builder: (context, state) => const LoginPage()),
     GoRoute(path: '/signup', builder: (context, state) => const SignupPage()),
     GoRoute(
-        path: '/upcomingmatches',
-        builder: (context, state) => const UpcomingMatchesPage()),
-    GoRoute(
         path: '/matchdetail',
         builder: (context, state) => const MatchDetailPage()),
     GoRoute(path: '/teams', builder: (context, state) => const TeamsPage()),
@@ -73,8 +71,12 @@ final router = GoRouter(
       },
     ),
     GoRoute(
-        path: '/upcoming',
-        builder: (context, state) => const UpcomingMatchesPage()),
+      path: '/match/:id',
+      builder: (context, state) {
+        final match = state.extra as GameMatch;
+        return UpcomingMatchesPage(match: match);
+      },
+    ),
     GoRoute(
         path: '/upcominglist',
         builder: (context, state) => const UpcomingMatchesListPage())

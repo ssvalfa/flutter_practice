@@ -12,7 +12,7 @@ class UpcomingCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
-          context.push('/match/${match.id}');
+          context.push('/match/${match.id}', extra: match);
         },
         child: Container(
           padding: const EdgeInsets.all(16),
