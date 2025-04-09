@@ -10,7 +10,7 @@ class Team {
   final String title;
   final String updated;
   final String type;
-  final League? league; // добавлено
+  final League? league;
 
   Team({
     required this.collectionId,
@@ -26,17 +26,32 @@ class Team {
   });
 
   factory Team.fromJson(Map<String, dynamic> json) {
+    if (json.isEmpty) {
+      return Team(
+        collectionId: '',
+        collectionName: '',
+        country: '',
+        created: '',
+        id: '',
+        img: '',
+        title: '',
+        updated: '',
+        type: '',
+        league: null,
+      );
+    }
+
     return Team(
-      collectionId: json['collectionId'],
-      collectionName: json['collectionName'],
-      country: json['country'],
-      created: json['created'],
-      id: json['id'],
-      img: json['img'],
-      title: json['title'],
-      updated: json['updated'],
-      type: json['type'],
-      league: json['expand']?['leagues'] != null
+      collectionId: json['collectionId'] ?? '',
+      collectionName: json['collectionName'] ?? '',
+      country: json['country'] ?? '',
+      created: json['created'] ?? '',
+      id: json['id'] ?? '',
+      img: json['img'] ?? '',
+      title: json['title'] ?? '',
+      updated: json['updated'] ?? '',
+      type: json['type'] ?? '',
+      league: json['expand'] != null && json['expand']['leagues'] != null
           ? League.fromJson(json['expand']['leagues'])
           : null,
     );

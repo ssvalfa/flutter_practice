@@ -72,109 +72,113 @@ class _TeamsPageState extends State<TeamsPage> {
             });
           },
           label: const Text("Reset Filter")),
-      body: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: leagues.map((league) {
-                  final isSelected =
-                      _selectedLeagueIndex == leagues.indexOf(league);
-                  return Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 4),
-                    child: FilledButton.icon(
-                      style: ButtonStyle(
-                        padding: WidgetStateProperty.all<EdgeInsets>(
-                            const EdgeInsets.all(20)),
-                        backgroundColor:
-                            WidgetStateProperty.resolveWith<Color>((states) {
-                          return isSelected
-                              ? Colors.blueAccent
-                              : Colors.grey[900]!;
-                        }),
-                      ),
-                      icon: Icon(
-                        league["icon"],
-                        color: Colors.white,
-                        size: 28,
-                      ),
-                      onPressed: () => selectLeague(leagues.indexOf(league)),
-                      label: Text(
-                        league["label"],
-                        style: TextStyle(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: leagues.map((league) {
+                    final isSelected =
+                        _selectedLeagueIndex == leagues.indexOf(league);
+                    return Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 4),
+                      child: FilledButton.icon(
+                        style: ButtonStyle(
+                          padding: WidgetStateProperty.all<EdgeInsets>(
+                              const EdgeInsets.all(20)),
+                          backgroundColor:
+                              WidgetStateProperty.resolveWith<Color>((states) {
+                            return isSelected
+                                ? Colors.blueAccent
+                                : Colors.grey[900]!;
+                          }),
+                        ),
+                        icon: Icon(
+                          league["icon"],
                           color: Colors.white,
-                          fontWeight:
-                              isSelected ? FontWeight.bold : FontWeight.normal,
+                          size: 28,
+                        ),
+                        onPressed: () => selectLeague(leagues.indexOf(league)),
+                        label: Text(
+                          league["label"],
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: isSelected
+                                ? FontWeight.bold
+                                : FontWeight.normal,
+                          ),
                         ),
                       ),
-                    ),
-                  );
-                }).toList(),
+                    );
+                  }).toList(),
+                ),
               ),
             ),
-          ),
-          const SliverToBoxAdapter(
-              child: SizedBox(height: 16)), // Отступ после списка лиг
-          FutureBuilder(
-            future: futureData,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const SliverToBoxAdapter(
-                  child: Center(child: CircularProgressIndicator()),
-                );
-              } else if (snapshot.hasError) {
-                return SliverToBoxAdapter(
-                  child: Center(
-                      child: Text('Error: ${snapshot.error}',
-                          style: TextStyle(color: Colors.white))),
-                );
-              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return const SliverToBoxAdapter(
-                  child: Center(
-                      child: Text('No teams available.',
-                          style: TextStyle(color: Colors.white))),
-                );
-              } else {
-                var teams = snapshot.data;
-                return SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      if (index % 2 == 1) {
-                        return const SizedBox(
-                            height: 10); // Отступ между элементами списка
-                      }
+            const SliverToBoxAdapter(
+                child: SizedBox(height: 16)), // Отступ после списка лиг
+            FutureBuilder(
+              future: futureData,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const SliverToBoxAdapter(
+                    child: Center(child: CircularProgressIndicator()),
+                  );
+                } else if (snapshot.hasError) {
+                  return SliverToBoxAdapter(
+                    child: Center(
+                        child: Text('Error: ${snapshot.error}',
+                            style: TextStyle(color: Colors.white))),
+                  );
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const SliverToBoxAdapter(
+                    child: Center(
+                        child: Text('No teams available.',
+                            style: TextStyle(color: Colors.white))),
+                  );
+                } else {
+                  var teams = snapshot.data;
+                  return SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (context, index) {
+                        if (index % 2 == 1) {
+                          return const SizedBox(
+                              height: 10); // Отступ между элементами списка
+                        }
 
-                      final itemIndex = index ~/ 2;
-                      if (itemIndex >= teams.length) {
-                        return null;
-                      }
+                        final itemIndex = index ~/ 2;
+                        if (itemIndex >= teams.length) {
+                          return null;
+                        }
 
-                      return ListTile(
-                        onTap: () {
-                          context.push('/teams/${teams[itemIndex].id}',
-                              extra: {'title': teams[itemIndex].title});
-                        },
-                        leading: Image.network(
-                          width: 40,
-                          'https://restaurant-menu.fly.dev/api/files/sport_teams/${teams[itemIndex].id}/${teams[itemIndex].img}',
-                        ),
-                        title: Text(teams[itemIndex].title,
-                            style: TextStyle(color: Colors.white)),
-                        subtitle: Text(teams[itemIndex].country,
-                            style: TextStyle(color: Colors.grey)),
-                        trailing:
-                            const Icon(Icons.arrow_right, color: Colors.white),
-                      );
-                    },
-                    childCount: teams!.length * 2 -
-                        1, // Учитываем отступы между элементами
-                  ),
-                );
-              }
-            },
-          ),
-        ],
+                        return ListTile(
+                          onTap: () {
+                            context.push('/teams/${teams[itemIndex].id}',
+                                extra: {'title': teams[itemIndex].title});
+                          },
+                          leading: Image.network(
+                            width: 40,
+                            'https://restaurant-menu.fly.dev/api/files/sport_teams/${teams[itemIndex].id}/${teams[itemIndex].img}',
+                          ),
+                          title: Text(teams[itemIndex].title,
+                              style: TextStyle(color: Colors.white)),
+                          subtitle: Text(teams[itemIndex].country,
+                              style: TextStyle(color: Colors.grey)),
+                          trailing: const Icon(Icons.arrow_right,
+                              color: Colors.white),
+                        );
+                      },
+                      childCount: teams!.length * 2 -
+                          1, // Учитываем отступы между элементами
+                    ),
+                  );
+                }
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -34,21 +34,29 @@ class GameMatch {
   });
 
   factory GameMatch.fromJson(Map<String, dynamic> json) {
+    final expandData = json['expand'] ?? {};
+
     return GameMatch(
       id: json['id'],
       collectionId: json['collectionId'],
       collectionName: json['collectionName'],
       created: DateTime.parse(json['created']),
       updated: DateTime.parse(json['updated']),
-      home: Team.fromJson(json['expand']['home']),
-      guest: Team.fromJson(json['expand']['guest']),
+      home: expandData['home'] != null
+          ? Team.fromJson(expandData['home'])
+          : Team.fromJson({}),
+      guest: expandData['guest'] != null
+          ? Team.fromJson(expandData['guest'])
+          : Team.fromJson({}),
       date: DateTime.parse(json['date']),
-      location: Stadium.fromJson(json['expand']['location']),
-      homeScore: json['home_score'],
-      guestScore: json['guest_score'],
-      type: json['type'],
-      league: json['expand']?['league'] != null
-          ? League.fromJson(json['expand']['league'])
+      location: expandData['location'] != null
+          ? Stadium.fromJson(expandData['location'])
+          : Stadium.fromJson({}),
+      homeScore: json['home_score'] ?? 0,
+      guestScore: json['guest_score'] ?? 0,
+      type: json['type'] ?? '',
+      league: expandData['league'] != null
+          ? League.fromJson(expandData['league'])
           : null,
     );
   }

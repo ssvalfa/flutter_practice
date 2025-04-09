@@ -74,7 +74,7 @@ class PlayerProfilePage extends StatelessWidget {
                     style: const TextStyle(color: Colors.green)),
                 Text("Country: ${player.country}",
                     style: const TextStyle(color: Colors.green)),
-                Text("Team: ${player.team.title}",
+                Text("Team: ${player.team}",
                     style: const TextStyle(color: Colors.green)),
               ],
             ),

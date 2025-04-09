@@ -7,6 +7,7 @@ class League {
   final String title;
   final String type;
   final String logo;
+  final String? team;
 
   League({
     required this.id,
@@ -17,18 +18,38 @@ class League {
     required this.title,
     required this.type,
     required this.logo,
+    this.team,
   });
 
   factory League.fromJson(Map<String, dynamic> json) {
+    if (json.isEmpty) {
+      return League(
+        id: '',
+        collectionId: '',
+        collectionName: '',
+        created: DateTime.now(),
+        updated: DateTime.now(),
+        title: '',
+        type: '',
+        logo: '',
+        team: null,
+      );
+    }
+
     return League(
-      id: json['id'],
-      collectionId: json['collectionId'],
-      collectionName: json['collectionName'],
-      created: DateTime.parse(json['created']),
-      updated: DateTime.parse(json['updated']),
-      title: json['title'],
-      type: json['type'],
-      logo: json['logo'],
+      id: json['id'] ?? '',
+      collectionId: json['collectionId'] ?? '',
+      collectionName: json['collectionName'] ?? '',
+      created: json['created'] != null
+          ? DateTime.parse(json['created'])
+          : DateTime.now(),
+      updated: json['updated'] != null
+          ? DateTime.parse(json['updated'])
+          : DateTime.now(),
+      title: json['title'] ?? '',
+      type: json['type'] ?? '',
+      logo: json['logo'] ?? '',
+      team: json['team'],
     );
   }
 
@@ -42,6 +63,7 @@ class League {
       'title': title,
       'type': type,
       'logo': logo,
+      if (team != null) 'team': team,
     };
   }
 }
