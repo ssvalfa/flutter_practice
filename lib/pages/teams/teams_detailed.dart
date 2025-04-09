@@ -172,9 +172,12 @@ class _TeamsDetailedPageState extends State<TeamsDetailedPage> {
           return Center(child: Text('Error: ${snapshot.error}'));
         }
         final matches = snapshot.data!;
-        return Column(
-          children: matches.map((match) => UpcomingCard(match: match)).toList(),
-        );
+        return matches.isNotEmpty
+            ? Column(
+                children:
+                    matches.map((match) => UpcomingCard(match: match)).toList(),
+              )
+            : const Center(child: Text("No matches found"));
       },
     );
   }
