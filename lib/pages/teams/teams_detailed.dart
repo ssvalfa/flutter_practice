@@ -125,7 +125,7 @@ class _TeamsDetailedPageState extends State<TeamsDetailedPage> {
                     '${AppConstants.url}/api/files/${team.collectionId}/${team.id}/${team.img}',
                     width: 80,
                     height: 80,
-                    fit: BoxFit.cover,
+                    fit: BoxFit.contain,
                     errorBuilder: (context, error, stackTrace) {
                       return Container(
                         width: 80,
