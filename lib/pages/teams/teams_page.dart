@@ -146,7 +146,7 @@ class _TeamsPageState extends State<TeamsPage> {
                       }
 
                       final itemIndex = index ~/ 2;
-                      if (itemIndex >= teams!.length) {
+                      if (itemIndex >= teams.length) {
                         return null;
                       }
 

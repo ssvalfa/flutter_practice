@@ -25,12 +25,13 @@ class _TeamsDetailedPageState extends State<TeamsDetailedPage> {
     final record = await pocketBaseService.pb
         .collection('sport_teams')
         .getOne(widget.id, expand: 'leagues');
+
     return Team.fromJson(record.toJson());
   }
 
   Future<List<GameMatch>> getMatches() async {
     final result =
-        await pocketBaseService.pb.collection('sport_matches').getFullList(
+        await pocketBaseService.pb.collection('sport_match').getFullList(
               expand: 'home,guest,location',
               filter:
                   'home="${widget.id}" || guest="${widget.id}" && date >= "${DateTime.now().toUtc().toIso8601String()}"',
@@ -66,50 +67,51 @@ class _TeamsDetailedPageState extends State<TeamsDetailedPage> {
         title: Text(widget.title),
       ),
       body: FutureBuilder(
-        future: Future.wait([team, matches, players]),
+        future: team,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           }
+          return Text('${snapshot.data}');
 
-          final teamData = snapshot.data![0] as Team;
-          final teamMatches = snapshot.data![1] as List<GameMatch>;
-          final teamPlayers = snapshot.data![2] as List<Player>;
+          // final teamData = snapshot.data![0] as Team;
+          // final teamMatches = snapshot.data![1] as List<GameMatch>;
+          // final teamPlayers = snapshot.data![2] as List<Player>;
 
-          return SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Общие сведения
-                _buildTeamInfo(teamData),
+          // return SingleChildScrollView(
+          //   padding: const EdgeInsets.all(16),
+          //   child: Column(
+          //     crossAxisAlignment: CrossAxisAlignment.start,
+          //     children: [
+          //       // Общие сведения
+          //       _buildTeamInfo(teamData),
 
-                const SizedBox(height: 20),
+          //       const SizedBox(height: 20),
 
-                // Приближающиеся матчи
-                Text("Upcoming Matches",
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleLarge
-                        ?.copyWith(color: Colors.white)),
-                const SizedBox(height: 10),
-                ...teamMatches.map((match) => UpcomingCard(match: match)),
+          //       // Приближающиеся матчи
+          //       Text("Upcoming Matches",
+          //           style: Theme.of(context)
+          //               .textTheme
+          //               .titleLarge
+          //               ?.copyWith(color: Colors.white)),
+          //       const SizedBox(height: 10),
+          //       ...teamMatches.map((match) => UpcomingCard(match: match)),
 
-                const SizedBox(height: 20),
+          //       const SizedBox(height: 20),
 
-                // Игроки
-                Text("Players",
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleLarge
-                        ?.copyWith(color: Colors.white)),
-                const SizedBox(height: 10),
-                ...teamPlayers.map((player) => _buildPlayerCard(player)),
-              ],
-            ),
-          );
+          //       // Игроки
+          //       Text("Players",
+          //           style: Theme.of(context)
+          //               .textTheme
+          //               .titleLarge
+          //               ?.copyWith(color: Colors.white)),
+          //       const SizedBox(height: 10),
+          //       ...teamPlayers.map((player) => _buildPlayerCard(player)),
+          //     ],
+          //   ),
+          // );
         },
       ),
     );
