@@ -173,7 +173,8 @@ class _TeamsDetailedPageState extends State<TeamsDetailedPage> {
         }
         final matches = snapshot.data!;
         return matches.isNotEmpty
-            ? Column(
+            ? Wrap(
+                runSpacing: 8,
                 children:
                     matches.map((match) => UpcomingCard(match: match)).toList(),
               )
