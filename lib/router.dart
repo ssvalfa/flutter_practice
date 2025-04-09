@@ -74,7 +74,10 @@ final router = GoRouter(
       },
     ),
     GoRoute(
-        path: '/upcominglist',
-        builder: (context, state) => const UpcomingMatchesListPage())
+        path: '/upcominglist/:type',
+        builder: (context, state) {
+          final type = state.pathParameters['type']!;
+          return UpcomingMatchesListPage(sportType: type);
+        })
   ],
 );

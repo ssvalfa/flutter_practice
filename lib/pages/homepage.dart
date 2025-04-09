@@ -203,7 +203,8 @@ class _FeedPageState extends State<FeedPage> {
                                       fontWeight: FontWeight.bold)),
                               TextButton(
                                 onPressed: () {
-                                  context.push('/upcominglist');
+                                  context
+                                      .push('/upcominglist/$_selectedFilter');
                                 },
                                 child: const Text('VIEW ALL',
                                     style: TextStyle(

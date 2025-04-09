@@ -11,7 +11,6 @@ class UpcomingMatchesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final league = match.home.league;
-
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
